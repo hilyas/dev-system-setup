@@ -1,0 +1,15 @@
+---
+galaxy_info:
+  author: Your Name
+  description: Ansible role to install common CLI tools on macOS
+  license: MIT
+  min_ansible_version: 2.9
+  platforms:
+    - name: MacOSX
+      versions:
+        - all
+  galaxy_tags:
+    - mac
+    - tools
+    - cli
+dependencies: []

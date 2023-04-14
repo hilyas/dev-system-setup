@@ -1,0 +1,44 @@
+---
+- name: Install common CLI tools, cask applications, and configure oh-my-zsh on macOS
+  hosts: localhost
+  connection: local
+  gather_facts: yes
+  roles:
+    - oh_my_zsh
+    - role: common_cli_tools
+      vars:
+        common_cli_tools:
+          - name: git
+            version: 2.33.0
+          - name: gh
+            version: latest
+          - name: wget
+            version: 1.21.1
+          - name: curl
+            version: 7.78.0
+          - name: httpie
+            version: 2.5.0
+          - name: terraform
+            version: 0.15.5
+          - name: packer
+            version: 1.7.2
+          - name: vault
+            version: 1.8.1
+    - role: cask_applications
+      vars:
+        cask_apps:
+          - name: google-chrome
+            version: latest
+          - name: visual-studio-code
+            version: 1.59.0
+          - name: slack
+            version: latest
+    - role: geerlingguy.docker
+      vars:
+        docker_edition: "desktop"
+        docker_package: "docker"
+        docker_package_state: "present"
+        docker_install_compose: true
+        docker_compose_version: "latest"
+        docker_users:
+          - "{{ ansible_user }}"

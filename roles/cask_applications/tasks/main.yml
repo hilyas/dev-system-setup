@@ -1,0 +1,29 @@
+---
+# Tasks for cask_applications role
+- name: Install Homebrew Cask
+  ansible.builtin.homebrew_tap:
+    name: homebrew/cask
+    state: present
+  become: no
+
+- name: Install cask applications
+  loop: "{{ cask_apps }}"
+  loop_control:
+    loop_var: app
+  block:
+    - name: Install "{{ app.name }}"
+      ansible.builtin.homebrew_cask:
+        name: "{{ app.name }}"
+        state: present
+      become: no
+      notify: update_homebrew_cask
+  when: app.version == "latest" or app.version is not defined
+
+    - name: Install "{{ app.name }}" with specific version
+      ansible.builtin.homebrew_cask:
+        name: "{{ app.name }}"
+        state: present
+        version: "{{ app.version }}"
+      become: no
+      notify: update_homebrew_cask
+  when: app.version != "latest" and app.version is defined

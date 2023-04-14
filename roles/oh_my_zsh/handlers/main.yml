@@ -1,0 +1,5 @@
+---
+# Handlers for oh_my_zsh role
+- name: restart_zsh
+  ansible.builtin.shell: "exec zsh"
+  become: no

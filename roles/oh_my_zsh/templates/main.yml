@@ -1,0 +1,14 @@
+# Template for .zshrc
+export ZSH="{{ ansible_env.HOME }}/.oh-my-zsh"
+
+ZSH_THEME="{{ oh_my_zsh_theme }}"
+
+plugins=(
+{% for plugin in oh_my_zsh_plugins %}
+  {{ plugin }}
+{% endfor %}
+)
+
+source $ZSH/oh-my-zsh.sh
+
+export PATH="/opt/homebrew/bin:$PATH"

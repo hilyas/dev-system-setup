@@ -1,0 +1,19 @@
+---
+# Defaults for common_cli_tools role
+common_cli_tools:
+  - name: git
+    version: latest
+  - name: gh
+    version: latest
+  - name: wget
+    version: latest
+  - name: curl
+    version: latest
+  - name: httpie
+    version: latest
+  - name: terraform
+    version: latest
+  - name: packer
+    version: latest
+  - name: vault
+    version: latest

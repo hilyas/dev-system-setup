@@ -1,0 +1,6 @@
+---
+# Handlers for common_cli_tools role
+- name: update_homebrew
+  ansible.builtin.command:
+    cmd: brew update
+  become: no

@@ -1,0 +1,9 @@
+---
+# Defaults for cask_applications role
+cask_apps:
+  - name: google-chrome
+    version: latest
+  - name: visual-studio-code
+    version: latest
+  - name: slack
+    version: latest
