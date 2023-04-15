@@ -5,12 +5,12 @@
     repo: https://github.com/ohmyzsh/ohmyzsh.git
     dest: "{{ ansible_env.HOME }}/.oh-my-zsh"
     version: master
-  become: no
+  become: false
 
 - name: Configure .zshrc
   ansible.builtin.template:
     src: zshrc.j2
     dest: "{{ ansible_env.HOME }}/.zshrc"
     mode: 0644
-  become: no
+  become: false
   notify: restart_zsh

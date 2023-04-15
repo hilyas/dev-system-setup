@@ -4,26 +4,27 @@
   ansible.builtin.homebrew_tap:
     name: homebrew/cask
     state: present
-  become: no
+  become: false
 
-- name: Install cask applications
+- name: Install cask applications with latest or undefined version
+  ansible.builtin.homebrew_cask:
+    name: "{{ app.name }}"
+    state: present
+  become: false
   loop: "{{ cask_apps }}"
   loop_control:
     loop_var: app
-  block:
-    - name: Install "{{ app.name }}"
-      ansible.builtin.homebrew_cask:
-        name: "{{ app.name }}"
-        state: present
-      become: no
-      notify: update_homebrew_cask
   when: app.version == "latest" or app.version is not defined
+  notify: update_homebrew_cask
 
-    - name: Install "{{ app.name }}" with specific version
-      ansible.builtin.homebrew_cask:
-        name: "{{ app.name }}"
-        state: present
-        version: "{{ app.version }}"
-      become: no
-      notify: update_homebrew_cask
+- name: Install cask applications with specific version
+  ansible.builtin.homebrew_cask:
+    name: "{{ app.name }}"
+    state: present
+    version: "{{ app.version }}"
+  become: false
+  loop: "{{ cask_apps }}"
+  loop_control:
+    loop_var: app
   when: app.version != "latest" and app.version is defined
+  notify: update_homebrew_cask

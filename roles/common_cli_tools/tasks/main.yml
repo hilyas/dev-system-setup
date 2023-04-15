@@ -5,7 +5,7 @@
     repo: https://github.com/Homebrew/brew.git
     dest: /opt/homebrew
     version: master
-  become: yes
+  become: true
   when: "'git' not in ansible_facts.packages"
 
 - name: Ensure Homebrew is in PATH
@@ -14,26 +14,32 @@
     line: 'export PATH="/opt/homebrew/bin:$PATH"'
     state: present
     create: yes
-  become: no
+  become: false
 
 - name: Install CLI tools
   loop: "{{ common_cli_tools }}"
   loop_control:
     loop_var: tool
-  block:
-    - name: Install "{{ tool.name }}"
-      ansible.builtin.homebrew:
-        name: "{{ tool.name }}"
-        state: present
-        version: "{{ tool.version }}"
-      become: no
-      notify: update_homebrew
+
+- name: Install "{{ tool.name }}" with latest or undefined version
+  ansible.builtin.homebrew:
+    name: "{{ tool.name }}"
+    state: present
+    version: "{{ tool.version }}"
+  become: false
+  loop: "{{ common_cli_tools }}"
+  loop_control:
+    loop_var: tool
   when: tool.version == "latest" or tool.version is not defined
-  
-    - name: Install "{{ tool.name }}" with specific version
-      ansible.builtin.homebrew:
-        name: "{{ tool.name }}@{{ tool.version }}"
-        state: present
-      become: no
-      notify: update_homebrew
+  notify: update_homebrew
+
+- name: Install "{{ tool.name }}" with specific version
+  ansible.builtin.homebrew:
+    name: "{{ tool.name }}@{{ tool.version }}"
+    state: present
+  become: false
+  loop: "{{ common_cli_tools }}"
+  loop_control:
+    loop_var: tool
   when: tool.version != "latest" and tool.version is defined
+  notify: update_homebrew

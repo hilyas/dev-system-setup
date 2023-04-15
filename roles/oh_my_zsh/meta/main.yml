@@ -3,7 +3,7 @@ galaxy_info:
   author: Your Name
   description: Ansible role to install and configure oh-my-zsh on macOS
   license: MIT
-  min_ansible_version: 2.9
+  min_ansible_version: "2.9"
   platforms:
     - name: MacOSX
       versions:
